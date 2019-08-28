@@ -1,3 +1,6 @@
+i.MX7ULP is currently using the RPSMG as the communication channels between the systems running on Cortex-A7 and Cortex-M4 cores. This project is going to port the SCP firmware to Cortex-M4 on i.MX7ULP to replace the RPMSG channel.
+
+
 SCP-firmware - version 2.5
 ==========================
 
