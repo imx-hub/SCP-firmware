@@ -184,8 +184,14 @@ ifeq ($(BS_FIRMWARE_HAS_MULTITHREADING),yes)
         ifeq ($(BS_COMPILER),ARM)
             LIBS_y += $(OS_DIR)/RTX/Library/ARM/RTX_CM3.lib
         else
-            LIBS_y += $(OS_DIR)/RTX/Library/GCC/libRTX_CM3.a
-        endif
+
+			ifeq ($(BS_FIRMWARE_CPU),cortex-m4)
+            	LIBS_y += $(OS_DIR)/RTX/Library/GCC/libRTX_CM4F.a
+			else
+            	LIBS_y += $(OS_DIR)/RTX/Library/GCC/libRTX_CM3.a
+			endif
+
+		endif
     endif
 
     INCLUDES += $(OS_DIR)/RTX/Source

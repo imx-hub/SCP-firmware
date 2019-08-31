@@ -17,6 +17,15 @@ BS_LIB_SOURCES_armv7-m += arm_mm.c
 
 BS_LIB_INCLUDES_armv7-m += $(TOP_DIR)/cmsis/CMSIS/Core/Include/
 
+
+BS_LIB_SOURCES_armv7e-m += armv7e-m/exceptions.c
+BS_LIB_SOURCES_armv7e-m += arm_nvic.c
+BS_LIB_SOURCES_armv7e-m += arm_main.c
+BS_LIB_SOURCES_armv7e-m += arm_mm.c
+
+BS_LIB_INCLUDES_armv7e-m += $(TOP_DIR)/cmsis/CMSIS/Core/Include/
+
+
 BS_LIB_SOURCES_host += host.c
 BS_LIB_SOURCES_host += host_interrupt.c
 ifeq ($(BUILD_HAS_MULTITHREADING),yes)
