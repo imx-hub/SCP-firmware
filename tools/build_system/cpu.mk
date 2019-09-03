@@ -21,8 +21,13 @@ ARMV7M_CPUS := cortex-m3 cortex-m4 cortex-m7
 ifneq ($(findstring $(BS_FIRMWARE_CPU),$(ARMV7M_CPUS)),)
     BS_ARCH_ISA := thumb
 
-    LDFLAGS_GCC += --specs=nano.specs
-    LDFLAGS_ARM += --target=arm-arm-none-eabi
+	ifneq ($(BS_VENDOR_SPECS),)
+    	LDFLAGS_GCC += --specs=$(BS_VENDOR_SPECS)
+	else
+    	LDFLAGS_GCC += --specs=nano.specs
+	endif
+
+	LDFLAGS_ARM += --target=arm-arm-none-eabi
     CFLAGS_CLANG += --target=arm-arm-none-eabi
 
 	ifeq ($(BS_FIRMWARE_CPU), cortex-m4)

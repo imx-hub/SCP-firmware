@@ -101,6 +101,10 @@ ifneq ($(BS_ARCH_CPU),host)
     SCATTER_PP = $(OBJ_DIR)/ld_preproc.s
 endif
 
+ifneq ($(BS_VENDOR_LD_SCRIPT),)
+	SCATTER_SRC = $(BS_VENDOR_LD_SCRIPT)
+endif
+
 #
 # Sources
 #
@@ -176,6 +180,13 @@ HEADER_STANDARD_MODULES := $(filter $(BS_FIRMWARE_MODULE_HEADERS_ONLY), \
 HEADER_PRODUCT_MODULES := $(filter $(BS_FIRMWARE_MODULE_HEADERS_ONLY), \
                                    $(ALL_PRODUCT_MODULES))
 
+ifeq ($(BS_RTOS_TYPE), freertos)
+	rtoslib := $(OS_DIR)/$(BS_RTOS_TYPE)/lib/libfreertos.a
+	rtoslib += $(OS_DIR)/$(BS_RTOS_TYPE)/lib/libcmsis_rtos.a
+else
+	rtoslib := $(OS_DIR)/RTX/Library/GCC/libRTX_CM4F.a
+endif
+
 ifeq ($(BS_FIRMWARE_HAS_MULTITHREADING),yes)
     BUILD_SUFFIX := $(MULTHREADING_SUFFIX)
     BUILD_HAS_MULTITHREADING := yes
@@ -184,9 +195,9 @@ ifeq ($(BS_FIRMWARE_HAS_MULTITHREADING),yes)
         ifeq ($(BS_COMPILER),ARM)
             LIBS_y += $(OS_DIR)/RTX/Library/ARM/RTX_CM3.lib
         else
-
 			ifeq ($(BS_FIRMWARE_CPU),cortex-m4)
-            	LIBS_y += $(OS_DIR)/RTX/Library/GCC/libRTX_CM4F.a
+#            	LIBS_y += $(OS_DIR)/RTX/Library/GCC/libRTX_CM4F.a
+				LIBS_y += $(rtoslib)
 			else
             	LIBS_y += $(OS_DIR)/RTX/Library/GCC/libRTX_CM3.a
 			endif
@@ -197,6 +208,7 @@ ifeq ($(BS_FIRMWARE_HAS_MULTITHREADING),yes)
     INCLUDES += $(OS_DIR)/RTX/Source
     INCLUDES += $(OS_DIR)/RTX/Include
     INCLUDES += $(OS_DIR)/../Core/Include
+	INCLUDES += $(BS_RTOS_INCLUDES)
 else
     BUILD_HAS_MULTITHREADING := no
 endif
